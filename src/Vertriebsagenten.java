@@ -54,7 +54,7 @@ public class Vertriebsagenten {
 
                     System.out.println();
                     System.out.println("AID|        ANAME|    DOLLARS");
-                    System.out.println("---|-------------|-----------");
+                    System.out.println("---|-------------|----------- du arsch");
 
                     while (rs.next())
                     {
