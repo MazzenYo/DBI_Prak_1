@@ -6,6 +6,7 @@ public class Benchmark_DB {
     public static void main(String[] args) throws SQLException
     {
         Scanner scan = new Scanner(System.in);
+        System.out.println("Enter n:");
         int n = scan.nextInt();
         scan.close();
         Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/benchmark-datenbank", "dbi", "dbi_pass");
@@ -15,10 +16,22 @@ public class Benchmark_DB {
         {
 
             System.out.println("\nConnected to benchmark database!\n");
-            String sqlFillBranches= String.format("insert into `benchmark-datenbank`.branches values(?, );
-
-
-            conn.commit();
+            String sqlFillBranches=
+                    "update `benchmark-datenbank`.branches set branchid = ?, branchname = ? ,balance = ? , address = ?"
+                    ;
+            int balance = 0;
+            String branchname = "ABCDEFGHIJKLMNOPQRST";
+            String address = "ABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUV";
+            PreparedStatement sqlFill = conn.prepareStatement(sqlFillBranches);
+            for (int i = 1; i < n; i++)
+            {
+                sqlFill.setInt(1, i);
+                sqlFill.setString(2, branchname);
+                sqlFill.setInt(3, balance);
+                sqlFill.setString(4, address);
+                sqlFill.executeUpdate();
+                System.out.println("Updates Branches");
+            }
             stmt.close();
 
             conn.close();
