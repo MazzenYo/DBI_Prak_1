@@ -3,11 +3,10 @@ import java.util.Scanner;
 
 public class Benchmark_DB {
 
-    private static int n;
     public static void main(String[] args) throws SQLException
     {
         Scanner scan = new Scanner(System.in);
-        n = scan.nextInt();
+        int n = scan.nextInt();
         scan.close();
         Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/benchmark-datenbank", "dbi", "dbi_pass");
         assert false;
