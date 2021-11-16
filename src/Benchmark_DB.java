@@ -16,24 +16,18 @@ public class Benchmark_DB {
         {
 
             System.out.println("\nConnected to benchmark database!\n");
-            String sqlFillBranches=
-                    "update `benchmark-datenbank`.branches set branchid = ?, branchname = ? ,balance = ? , address = ?"
-                    ;
             int balance = 0;
-            String branchname = "ABCDEFGHIJKLMNOPQRST";
+            String branchnameString = "ABCDEFGHIJKLMNOPQRST";
             String address = "ABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUV";
-            PreparedStatement sqlFill = conn.prepareStatement(sqlFillBranches);
-            for (int i = 1; i < n; i++)
+            for (int i = 1; i <= n; i++)
             {
-                sqlFill.setInt(1, i);
-                sqlFill.setString(2, branchname);
-                sqlFill.setInt(3, balance);
-                sqlFill.setString(4, address);
-                sqlFill.executeUpdate();
+
+                String sqlFillBranches=
+                        ("insert into `benchmark-datenbank`.branches(branchid, branchname, balance, address) values(i,'branch' , '0', 'aaa' )");
+                stmt.executeUpdate(sqlFillBranches);
                 System.out.println("Updates Branches");
             }
             stmt.close();
-
             conn.close();
             System.out.println("\nDisconnected!\n");
         }
