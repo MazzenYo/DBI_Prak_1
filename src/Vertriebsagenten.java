@@ -1,11 +1,6 @@
 import java.io.*;
 import java.sql.*;
 
-
-/**
- * Test ew4rgew4rg
- */
-
 public class Vertriebsagenten {
     protected static BufferedReader stdin =
             new BufferedReader(new InputStreamReader(System.in));
