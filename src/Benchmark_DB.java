@@ -19,15 +19,27 @@ public class Benchmark_DB {
             System.out.println("\nConnected to benchmark database!\n");
             for (int i = 1; i <= n; i++)
             {
-                String sqlQuery = "insert into `benchmark-datenbank`.branches(branchid, branchname, balance, address) values ("+ i + ",'ABCDEFGHIJKLMNOPQRST' ,0,'ABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUV' ) ";
-                stmt.executeUpdate(sqlQuery);
-
+                String SQL_Insert = "insert into `benchmark-datenbank`.branches(branchid, branchname, balance, address) values (?,?,?,?)";
+                PreparedStatement preparedStatement= conn.prepareStatement(SQL_Insert);
+                preparedStatement.setInt(1, i);
+                preparedStatement.setString(2, "ABCDEFGHIJKLMNOPQRST");
+                preparedStatement.setInt(3, 0);
+                preparedStatement.setString(4, "ABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUV");
+                preparedStatement.executeUpdate();
+                System.out.println("Branch");
             }
             for(int i = 1; i <= n * 100000; ++i) {
                 Random rand = new Random();
                 int randomBranchid= rand.nextInt(n)+1;
-                String sqlQuery = "insert into `benchmark-datenbank`.accounts(accid, balance, branchid, name, address) values ("+ i + ",0,"+randomBranchid+",'ABCDEFGHIJKLMNOPQRST' ,'ABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQR') ";
-                stmt.executeUpdate(sqlQuery);
+                String SQL_Insert = "insert into `benchmark-datenbank`.accounts(accid, balance, branchid, name, address) values (?,?,?,?,?)";
+                PreparedStatement preparedStatement= conn.prepareStatement(SQL_Insert);
+                preparedStatement.setInt(1, i);
+                preparedStatement.setInt(2, 0);
+                preparedStatement.setInt(3, randomBranchid);
+                preparedStatement.setString(4, "ABCDEFGHIJKLMNOPQRST");
+                preparedStatement.setString(5, "ABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQR");
+                preparedStatement.executeUpdate();
+                System.out.println("account");
             }
             for(int i = 1; i <= n * 10; ++i) {
                 Random rand = new Random();
