@@ -44,8 +44,15 @@ public class Benchmark_DB {
             for(int i = 1; i <= n * 10; ++i) {
                 Random rand = new Random();
                 int randomBranchid= rand.nextInt(n)+1;
-                String sqlQuery = "insert into `benchmark-datenbank`.tellers(tellerid, balance, branchid, tellername, address) values ("+ i + ",0,"+randomBranchid+",'ABCDEFGHIJKLMNOPQRST' ,'ABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQR') ";
-                stmt.executeUpdate(sqlQuery);
+                String SQL_Insert = "insert into `benchmark-datenbank`.tellers(tellerid, balance, branchid, tellername, address) values (?,?,?,?,?) ";
+                PreparedStatement preparedStatement= conn.prepareStatement(SQL_Insert);
+                preparedStatement.setInt(1, i);
+                preparedStatement.setInt(2, 0);
+                preparedStatement.setInt(3, randomBranchid);
+                preparedStatement.setString(4, "ABCDEFGHIJKLMNOPQRST");
+                preparedStatement.setString(5, "ABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQR");
+                preparedStatement.executeUpdate();
+                System.out.println("tellers");
             }
 
             System.out.println("\nDisconnected!\n");
