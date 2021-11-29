@@ -6,13 +6,14 @@ public class Benchmark_DB {
 
     public static void main(String[] args) throws SQLException
     {
+
         long start = System.currentTimeMillis();
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter n:");
         int n = scan.nextInt();
         scan.close();
         Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/benchmark-datenbank", "dbi", "dbi_pass");
-        Statement stmt = conn.createStatement();
+        conn.setAutoCommit(false);
         try
         {
 
@@ -26,7 +27,7 @@ public class Benchmark_DB {
                 preparedStatement.setInt(3, 0);
                 preparedStatement.setString(4, "ABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUV");
                 preparedStatement.executeUpdate();
-                System.out.println("Branch");
+
             }
             for(int i = 1; i <= n * 100000; ++i) {
                 Random rand = new Random();
@@ -39,7 +40,7 @@ public class Benchmark_DB {
                 preparedStatement.setString(4, "ABCDEFGHIJKLMNOPQRST");
                 preparedStatement.setString(5, "ABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQR");
                 preparedStatement.executeUpdate();
-                System.out.println("account");
+
             }
             for(int i = 1; i <= n * 10; ++i) {
                 Random rand = new Random();
@@ -52,8 +53,9 @@ public class Benchmark_DB {
                 preparedStatement.setString(4, "ABCDEFGHIJKLMNOPQRST");
                 preparedStatement.setString(5, "ABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQR");
                 preparedStatement.executeUpdate();
-                System.out.println("tellers");
+
             }
+            conn.commit();
 
             System.out.println("\nDisconnected!\n");
         }
@@ -64,13 +66,11 @@ public class Benchmark_DB {
         }
         finally // close used resources
         {
+
             long finish = System.currentTimeMillis();
             long timeElapsed = (finish - start) / 1000L;
             String msg = "time needed n = "+ n + ": "+ timeElapsed+"  seconds";
             System.out.println(msg);
-            /*String sqlQuery = "delete from `benchmark-datenbank`.branches;";
-            stmt.executeUpdate(sqlQuery);*/
-            if (stmt!=null) stmt.close();
             if (conn!=null) conn.close();
 
 
