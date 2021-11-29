@@ -13,6 +13,7 @@ public class Benchmark_DB {
         int n = scan.nextInt();
         scan.close();
 
+        final long timeStart = System.currentTimeMillis() / 1000;
         //Verbindungsaufbau
         Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/benchmark-datenbank", "dbi", "dbi_pass");
         Statement stmt = conn.createStatement();
@@ -69,6 +70,9 @@ public class Benchmark_DB {
             stmt.executeUpdate(sqlQuery);*/
             if (stmt!=null) stmt.close();
             if (conn!=null) conn.close();
+
+            final long timeEnd = System.currentTimeMillis() / 1000;
+            System.out.println("Zeitmessung: " + (timeEnd - timeStart) + " Sekunden.");
 
 
         }
