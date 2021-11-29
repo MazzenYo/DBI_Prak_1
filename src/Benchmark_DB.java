@@ -6,6 +6,8 @@ public class Benchmark_DB {
 
     public static void main(String[] args) throws SQLException
     {
+        // Scanner für N Wert über Tastatur
+        long start = System.currentTimeMillis();
 
 
         Scanner scan = new Scanner(System.in);
@@ -21,6 +23,16 @@ public class Benchmark_DB {
         {
             String SQL_Insert_branches = "insert into `benchmark-datenbank`.branches(branchid, branchname, balance, address) values (?,?,?,?)";
             PreparedStatement preparedStatement= conn.prepareStatement(SQL_Insert_branches);
+
+        final long timeStart = System.currentTimeMillis() / 1000;
+        //Verbindungsaufbau
+        Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/benchmark-datenbank", "dbi", "dbi_pass");
+        Statement stmt = conn.createStatement();
+        try
+        {
+
+            System.out.println("\nConnected to benchmark database!\n");
+
             for (int i = 1; i <= n; i++)
             {
                 preparedStatement.setInt(1, i);
