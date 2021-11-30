@@ -12,10 +12,11 @@ public class Benchmark_DB {
         System.out.println("Enter n:");
         int n = scan.nextInt();
         scan.close();
-        /*rewriteBatchedStatements=true*/
+
         Connection conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/benchmark-datenbank?rewriteBatchedStatements=true&useServerPrepStmts=false", "dbi", "dbi_pass");
-        System.out.println("\nConnected to benchmark database!\n");
+        System.out.println("\nSuccessfully connected to benchmark database!\n");
         conn.setAutoCommit(false);
+        System.out.println("Starting time measurement!\n");
         long start = System.currentTimeMillis();
         try
         {
@@ -29,6 +30,7 @@ public class Benchmark_DB {
                 preparedStatement.setString(4, "ABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUVXYZABCDEFGHIJKLMNOPQRSTUV");
                 preparedStatement.executeUpdate();
             }
+
             String SQL_Insert_accounts = "insert into `benchmark-datenbank`.accounts(accid, balance, branchid, name, address) values (?,?,?,?,?)";
             preparedStatement= conn.prepareStatement(SQL_Insert_accounts);
             for(int i = 1; i <= n * 100000; ++i) {
@@ -70,7 +72,7 @@ public class Benchmark_DB {
 
             long finish = System.currentTimeMillis();
             long timeElapsed = (finish - start) / 1000L;
-            String msg = "time needed n = "+ n + ": "+ timeElapsed+"  seconds";
+            String msg = "Ended time measurement: \n Time needed for n = "+ n + ": "+ timeElapsed+"  seconds";
             System.out.println(msg);
             conn.close();
         }
