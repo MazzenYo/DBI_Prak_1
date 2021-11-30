@@ -7,7 +7,7 @@ public class Benchmark_DB {
     public static void main(String[] args) throws SQLException
     {
 
-
+/**/
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter n:");
         int n = scan.nextInt();
