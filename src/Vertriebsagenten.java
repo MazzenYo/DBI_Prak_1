@@ -15,15 +15,10 @@ public class Vertriebsagenten {
         }
         catch (IOException e)
         {
-            System.err.println(e.toString());
+            System.err.println(e);
             return null;
         }
     }  // end getInput
-
-    // straightforward helper method for connecting to a database
-    // (please see the JDBC DataSource interface for a more preferred,
-    // however slightly more complex and abstract way for getting
-    // a JDBC Connection object!)
 
     // main program
     public static void main(String[] args) throws SQLException
@@ -34,37 +29,34 @@ public class Vertriebsagenten {
 
             try
             {
-                conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/dbi", "dbi", "dbi_pass");
+                conn = DriverManager.getConnection("jdbc:mysql://127.0.0.1:3306/benchdb", "dbi", "dbi_pass");
                 conn.setAutoCommit(false);
                 System.out.println("\nConnected to sample database!\n");
 
                 stmt = conn.prepareStatement(
-                        "select agents.aid, agents.aname, sum(dollars) " +
-                                "from dbi.orders, dbi.agents " +
-                                "where pid=? and orders.aid=agents.aid " +
-                                "group by agents.aid, agents.aname " +
-                                "order by sum(dollars) DESC");
+                        "select history.accid , accounts.name, delta, cmmnt " +
+                                "from history,accounts " +
+                                "where history.accid = ? and accounts.accid=history.accid");
 
-                String productID = getInput("Please enter product id: ");
+                String accID = getInput("Please enter accID: ");
 
-                while ((productID!=null) && (productID.length()!=0))
-                {
-                    stmt.setString(1,productID);
+                while ((accID != null) && (accID.length() != 0)) {
+                    stmt.setString(1, accID);
                     rs = stmt.executeQuery();
 
                     System.out.println();
-                    System.out.println("AID|        ANAME|    DOLLARS");
-                    System.out.println("---|-------------|-----------");
+                    System.out.println("accid|        name|    delta   |       cmmt ");
+                    System.out.println("---|-------------|-----------|-----------|");
 
-                    while (rs.next())
-                    {
-                        System.out.println(rs.getString(1) + "\t\t" +
-                                rs.getString(2) + "\t\t" + rs.getDouble(3));
+                    while (rs.next()) {
+                        System.out.println(rs.getInt(1) + "\t\t" +
+                                rs.getString(2) + "\t\t" + rs.getInt(3)
+                                + "\t\t" + rs.getString(4));
                     }
                     rs.close();
                     conn.commit();
                     stmt.clearParameters();
-                    productID = getInput("\nPlease enter product id: ");
+                    accID = getInput("\nPlease enter product id: ");
                 }
 
                 stmt.close();
@@ -74,7 +66,7 @@ public class Vertriebsagenten {
             }
             catch (SQLException e)
             {
-                System.err.println(e.toString());
+                System.err.println(e);
                 System.exit(1);
             }
             finally // close used resources
